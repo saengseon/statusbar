@@ -30,14 +30,14 @@ import FishUI 1.0 as FishUI
 Item {
     id: rootItem
 
-    property int iconSize: 16
+    property int iconSize: 17
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
     property bool darkMode: false
     property color textColor: rootItem.darkMode ? "#FFFFFF" : "#000000";
-    property var fontSize: rootItem.height ? rootItem.height / 3 : 1
+    property var fontSize: rootItem.height ? (rootItem.height / 3) * 1.25 : 1
 
     property var timeFormat: StatusBar.twentyFourTime ? "HH:mm" : "h:mm ap"
 
@@ -74,17 +74,16 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        opacity: 0.3
 
-//        color: FishUI.Theme.darkMode ? "#4D4D4D" : "#FFFFFF"
-//        opacity: windowHelper.compositing ? FishUI.Theme.darkMode ? 0.5 : 0.7 : 1.0
+        color: rootItem.darkMode ? "#4D4D4D" : "#FFFFFF"
+        opacity: windowHelper.compositing ? (rootItem.darkMode ? 0.5 : 0.7) : 1.0
 
-//        Behavior on color {
-//            ColorAnimation {
-//                duration: 100
-//                easing.type: Easing.Linear
-//            }
-//        }
+        Behavior on color {
+            ColorAnimation {
+                duration: 100
+                easing.type: Easing.Linear
+            }
+        }
     }
 
     FishUI.WindowHelper {
@@ -132,8 +131,8 @@ Item {
 
                 Image {
                     id: acticityIcon
-                    width: rootItem.iconSize
-                    height: rootItem.iconSize
+                    width: rootItem.height * 0.9
+                    height: rootItem.height * 0.9
                     sourceSize: Qt.size(rootItem.iconSize,
                                         rootItem.iconSize)
                     source: acticity.icon ? "image://icontheme/" + acticity.icon : ""
@@ -144,13 +143,14 @@ Item {
 
                 Label {
                     id: acticityLabel
-                    text: acticity.title
+                    text: acticity.title ? acticity.title : "생선"
                     Layout.fillWidth: true
                     elide: Qt.ElideRight
                     color: rootItem.textColor
                     visible: text
                     Layout.alignment: Qt.AlignVCenter
                     font.pointSize: rootItem.fontSize
+                    font.weight: Font.Medium
                 }
             }
         }
